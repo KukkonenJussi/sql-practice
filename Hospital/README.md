@@ -221,3 +221,71 @@ ORDER BY
   LEN(first_name),
   first_name ASC;
 ```
+
+6. Show the total amount of male patients and the total amount of female patients in the patients table.
+Display the two results in the same row.
+
+```
+SELECT 
+  SUM(Gender = 'M') as male_count, 
+  SUM(Gender = 'F') AS female_count
+FROM patients;
+
+```
+
+7. Show first and last name, allergies from patients which have allergies to either 'Penicillin' or 'Morphine'. Show results ordered ascending by allergies then by first_name then by last_name.
+
+```
+SELECT
+	first_name,
+    last_name,
+    allergies
+FROM patients
+WHERE allergies IN('Penicillin', 'Morphine')
+ORDER BY 
+	allergies, 
+    first_name, 
+    last_name;
+```
+
+8. Show patient_id, diagnosis from admissions. Find patients admitted multiple times for the same diagnosis.
+
+```
+SELECT
+  patient_id,
+  diagnosis
+FROM admissions
+GROUP BY 
+	patient_id, 
+	diagnosis
+HAVING COUNT(diagnosis) > 1;
+```
+
+9. Show the city and the total number of patients in the city.
+Order from most to least patients and then by city name ascending.
+
+```
+SELECT
+	city,
+    COUNT(*) as total_patients_in_city
+FROM patients
+GROUP BY city
+ORDER BY 
+	total_patients_in_city DESC,
+    city ASC;
+```
+
+10. Show first name, last name and role of every person that is either patient or doctor.
+The roles are either "Patient" or "Doctor"
+
+```
+SELECT first_name, last_name, 'Patient' AS role FROM patients
+	UNION ALL
+SELECT first_name, last_name, 'Doctor' AS role FROM doctors;
+```
+
+11. Show all allergies ordered by popularity. Remove NULL values from query.
+
+```
+
+```
