@@ -287,5 +287,50 @@ SELECT first_name, last_name, 'Doctor' AS role FROM doctors;
 11. Show all allergies ordered by popularity. Remove NULL values from query.
 
 ```
+SELECT allergies, COUNT(allergies) as total_diagnosis
+FROM patients
+WHERE allergies IS NOT NULL
+GROUP BY allergies
+ORDER BY total_diagnosis DESC;
+```
 
+12. Show all patient's first_name, last_name, and birth_date who were born in the 1970s decade. Sort the list starting from the earliest birth_date.
+
+```
+SELECT
+	first_name,
+    last_name,
+    birth_date
+FROM patients
+WHERE YEAR(birth_date) BETWEEN 1970 AND 1979
+ORDER BY birth_date ASC;
+```
+
+13. We want to display each patient's full name in a single column. Their last_name in all upper letters must appear first, then first_name in all lower case letters. Separate the last_name and first_name with a comma. Order the list by the first_name in decending order
+EX: SMITH,jane
+
+```
+SELECT CONCAT(upper(last_name), ',', lower(first_name)) AS full_name
+FROM patients
+ORDER BY first_name DESC;
+```
+
+14. Show the province_id(s), sum of height; where the total sum of its patient's height is greater than or equal to 7,000.
+
+```
+SELECT
+	province_id,
+    SUM(height) AS sum_height
+FROM patients
+GROUP BY province_id
+HAVING sum_height >= 7000
+ORDER BY sum_height ASC;
+```
+
+15. Show the difference between the largest weight and smallest weight for patients with the last name 'Maroni'
+
+```
+SELECT (MAX(weight) - MIN(weight)) AS weight_difference
+FROM patients
+WHERE last_name = 'Maroni';
 ```
