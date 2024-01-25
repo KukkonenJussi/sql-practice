@@ -112,3 +112,36 @@ FROM products
 ### <u>Medium:</u>
 
 1. Show the ProductName, CompanyName, CategoryName from the products, suppliers, and categories table
+
+```
+SELECT
+	p.product_name,
+    s.company_name,
+    c.category_name
+FROM categories c
+JOIN products p ON c.category_id = p.category_id
+JOIN suppliers s ON p.supplier_id = s.supplier_id;
+```
+
+2. Show the category_name and the average product unit price for each category rounded to 2 decimal places.
+
+```
+SELECT
+	c.category_name as category,
+    ROUND(AVG(p.unit_price), 2) as average_price
+FROM categories as c
+JOIN products as p on c.category_id = p.category_id
+group by category_name;
+```
+
+3. Show the city, company_name, contact_name from the customers and suppliers table merged together.
+Create a column which contains 'customers' or 'suppliers' depending on the table it came from.
+
+```
+SELECT city, company_name, contact_name, 'customers' as relationship FROM customers
+UNION
+SELECT city, company_name, contact_name, 'suppliers' FROM suppliers;
+```
+
+### <u>Hard:</u>
+
