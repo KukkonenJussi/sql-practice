@@ -514,11 +514,6 @@ Show only the patients who has a diagnosis as 'Epilepsy' and the doctor's first 
 
 Check patients, admissions, and doctors tables for required information.
 
-4 Show patient_id, first_name, last_name, and attending doctor's specialty.
-Show only the patients who has a diagnosis as 'Epilepsy' and the doctor's first name is 'Lisa'
-
-Check patients, admissions, and doctors tables for required information.
-
 ```
 SELECT
   p.patient_id,
@@ -533,7 +528,7 @@ WHERE
   d.first_name = 'Lisa'
 ```
 
-5 All patients who have gone through admissions, can see their medical documents on our site. Those patients are given a temporary password after their first admission. Show the patient_id and temp_password.
+4 All patients who have gone through admissions, can see their medical documents on our site. Those patients are given a temporary password after their first admission. Show the patient_id and temp_password.
 
 The password must be the following, in order:
 
@@ -550,7 +545,7 @@ JOIN admissions a ON p.patient_id = a.patient_id
 GROUP BY p.patient_id;
 ```
 
-6 Each admission costs $50 for patients without insurance, and $10 for patients with insurance. All patients with an even patient_id have insurance.
+5 Each admission costs $50 for patients without insurance, and $10 for patients with insurance. All patients with an even patient_id have insurance.
 
 Give each patient a 'Yes' if they have insurance, and a 'No' if they don't have insurance. Add up the admission_total cost for each has_insurance group.
 
@@ -564,4 +559,43 @@ SELECT
 	END) AS cost_after_insurance
 FROM admissions
 GROUP BY has_insurance;
+```
+
+6 Show the provinces that has more patients identified as 'M' than 'F'. Must only show full province_name
+
+```
+SELECT pn.province_name
+FROM patients pa
+JOIN province_names pn on pa.province_id = pn.province_id
+GROUP BY pn.province_name
+HAVING
+  COUNT( CASE WHEN gender = 'F' THEN 1 END);
+  COUNT( CASE WHEN gender = 'M' THEN 1 END) >
+```
+
+7 We are looking for a specific patient. Pull all columns for the patient who matches the following criteria:
+- First_name contains an 'r' after the first two letters.
+- Identifies their gender as 'F'
+- Born in February, May, or December
+- Their weight would be between 60kg and 80kg
+- Their patient_id is an odd number
+- They are from the city 'Kingston'
+
+```
+SELECT *
+FROM patients
+WHERE
+  first_name LIKE '__r%' AND
+  gender = 'F' AND
+  MONTH(birth_date) IN (2, 5, 12) AND
+  weight BETWEEN 60 AND 80 AND
+  patient_id % 2 = 1 AND
+  city = 'Kingston';
+```
+
+8 Show the percent of patients that have 'M' as their gender. Round the answer to the nearest hundreth number and in percent form.
+
+```
+SELECT ROUND(100 * avg(gender = 'M'), 2) || '%' AS percent_of_male_patients
+FROM patients;
 ```
