@@ -599,3 +599,15 @@ WHERE
 SELECT ROUND(100 * avg(gender = 'M'), 2) || '%' AS percent_of_male_patients
 FROM patients;
 ```
+
+9 For each day display the total amount of admissions on that day. Display the amount changed from the previous date.
+
+```
+SELECT 
+  admission_date,
+  COUNT(*) AS admission_day,
+  COUNT(*) - LAG(COUNT(admission_date)) OVER(ORDER BY admission_date) AS admission_count_change
+FROM admissions
+GROUP BY admission_date
+ORDER BY admission_date;
+```
